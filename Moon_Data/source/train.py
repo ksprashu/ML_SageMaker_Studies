@@ -131,7 +131,7 @@ if __name__ == '__main__':
     # Training Parameters, given
     parser.add_argument('--batch-size', type=int, default=64, metavar='N',
                         help='input batch size for training (default: 64)')
-    parser.add_argument('--epochs', type=int, default=10, metavar='N',
+    parser.add_argument('--epochs', type=int, default=10, metavar='E',
                         help='number of epochs to train (default: 10)')
     parser.add_argument('--lr', type=float, default=0.001, metavar='LR',
                         help='learning rate (default: 0.001)')
@@ -140,6 +140,12 @@ if __name__ == '__main__':
   
     ## TODO: Add args for the three model parameters: input_dim, hidden_dim, output_dim
     # Model parameters
+    parser.add_argument('--input_dim', type=int, default=2, metavar='I',
+                       help='input dimension for training data (default: 2)')
+    parser.add_argument('--hidden_dim', type=int, default=8, metavar='H',
+                       help='hidden dimension for fully connected network (default: 8)')
+    parser.add_argument('--output_dim', type=int, default=1, metavar='O',
+                       help='output dimension for prediction (default: 1)')
 
     
     args = parser.parse_args()
@@ -158,14 +164,15 @@ if __name__ == '__main__':
     ## TODO:  Build the model by passing in the input params
     # To get params from the parser, call args.argument_name, ex. args.epochs or ards.hidden_dim
     # Don't forget to move your model .to(device) to move to GPU , if appropriate
-    model = None
+    model = SimpleNet(args.input_dim, args.hidden_dim, args.output_dim)
+    model = model.to(device)
     
     # Given: save the parameters used to construct the model
     save_model_params(model, args.model_dir)
 
     ## TODO: Define an optimizer and loss function for training
-    optimizer = None
-    criterion = None
+    optimizer = optim.Adam(model.parameters(), lr=args.lr)
+    criterion = nn.BCELoss()
 
     
     # Trains the model (given line of code, which calls the above training function)
