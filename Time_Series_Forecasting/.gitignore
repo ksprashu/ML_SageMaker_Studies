@@ -1,0 +1,4 @@
+json_energy_data/
+*.txt
+*.zip
+__pycache__/
